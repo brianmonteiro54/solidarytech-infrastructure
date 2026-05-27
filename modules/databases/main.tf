@@ -80,7 +80,7 @@ module "dynamodb_volunteers" {
   environment       = var.environment
 
   # --- Schema ---
-  hash_key   = "volunteer_id"
+  hash_key = "volunteer_id"
   attributes = [
     {
       name = "volunteer_id"
