@@ -137,10 +137,9 @@ variable "rds_port" {
 # -----------------------------------------------------------------------------
 # DynamoDB — Volunteers
 # -----------------------------------------------------------------------------
-variable "dynamodb_table_name" {
-  description = "Nome da tabela DynamoDB de voluntários"
-  type        = string
-}
+# Nome da tabela é fixo ("volunteers") + prefix aplicado pelo módulo upstream.
+# Resultado final: "${name_prefix}-volunteers" (ex: solidarytech-prod-volunteers)
+# -----------------------------------------------------------------------------
 
 variable "dynamodb_billing_mode" {
   description = "PAY_PER_REQUEST (FinOps friendly) ou PROVISIONED"

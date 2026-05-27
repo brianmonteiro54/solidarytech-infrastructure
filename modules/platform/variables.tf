@@ -88,7 +88,7 @@ variable "enabled_cluster_log_types" {
 variable "nodegroups" {
   description = "Configuração dos node groups (managed). Schema do módulo upstream: scaling_min/scaling_max/scaling_desired."
   type        = any
-  default = {
+  default     = {
     workers = {
       scaling_desired = 2
       scaling_min     = 2
@@ -120,7 +120,7 @@ variable "launch_template_volume_size" {
 variable "addons" {
   description = "Mapa de addons EKS (vpc-cni, coredns, kube-proxy, ebs-csi)"
   type        = any
-  default = {
+  default     = {
     vpc_cni = {
       addon_name    = "vpc-cni"
       addon_version = null

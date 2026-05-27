@@ -12,9 +12,12 @@ module "sqs_donations" {
   source = "github.com/brianmonteiro54/terraform-aws-sqs//modules/sqs?ref=474eeb54ac7af491c1d921a6d78746cf920647c2"
 
   # --- Identificação ---
+  # Módulo upstream concatena prefix + name sem separador, então adiciono o "-" aqui.
+  # Resultado: "solidarytech-prod-donations" (em vez de "solidarytech-proddonations")
   queue_name        = var.queue_name
-  queue_name_prefix = var.name_prefix
+  queue_name_prefix = "${var.name_prefix}-"
   environment       = var.environment
+  cost_center       = var.cost_center
 
   # --- Configuração da Fila Principal ---
   fifo_queue                 = false

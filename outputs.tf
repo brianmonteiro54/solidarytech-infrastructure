@@ -32,8 +32,9 @@ output "cluster_name" {
 }
 
 output "cluster_endpoint" {
-  description = "Endpoint do API server do EKS"
+  description = "Endpoint do API server do EKS (privado neste setup)"
   value       = module.platform.cluster_endpoint
+  sensitive   = true
 }
 
 # -----------------------------------------------------------------------------

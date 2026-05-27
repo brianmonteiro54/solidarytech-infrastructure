@@ -24,6 +24,7 @@ module "pritunl_vpn" {
   # --- Identificação ---
   instance_name = "${var.name_prefix}-vpn"
   environment   = var.environment
+  cost_center   = var.cost_center
 
   # --- Configuração da Instância ---
   ami_id               = var.ami_id
@@ -46,7 +47,7 @@ module "pritunl_vpn" {
   create_kms_key        = false
 
   # --- Security Group (criado pelo módulo, regras explícitas) ---
-  create_security_group = true
+  create_security_group        = true
   security_group_ingress_rules = [
     {
       from_port   = 443

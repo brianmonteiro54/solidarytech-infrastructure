@@ -37,6 +37,7 @@ module "messaging" {
 
   name_prefix = local.name_prefix
   environment = var.environment
+  cost_center = var.cost_center
 }
 
 # -----------------------------------------------------------------------------
@@ -45,13 +46,12 @@ module "messaging" {
 module "databases" {
   source = "./modules/databases"
 
-  name_prefix         = local.name_prefix
-  environment         = var.environment
-  vpc_id              = module.networking.vpc_id
-  private_subnet_ids  = module.networking.private_subnet_ids
-  allowed_sg_id       = module.networking.eks_workers_sg_id
-  rds_databases       = local.rds_databases
-  dynamodb_table_name = "${local.name_prefix}-volunteers"
+  name_prefix        = local.name_prefix
+  environment        = var.environment
+  vpc_id             = module.networking.vpc_id
+  private_subnet_ids = module.networking.private_subnet_ids
+  allowed_sg_id      = module.networking.eks_workers_sg_id
+  rds_databases      = local.rds_databases
 }
 
 # -----------------------------------------------------------------------------
@@ -62,6 +62,7 @@ module "vpn" {
 
   name_prefix   = local.name_prefix
   environment   = var.environment
+  cost_center   = var.cost_center
   vpc_id        = module.networking.vpc_id
   subnet_id     = module.networking.public_subnet_ids[0]
   instance_role = data.aws_iam_role.lab_role.name

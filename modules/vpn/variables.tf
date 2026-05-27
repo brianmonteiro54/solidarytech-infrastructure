@@ -14,6 +14,12 @@ variable "environment" {
   type        = string
 }
 
+variable "cost_center" {
+  description = "Cost center FinOps - sobrescreve o default 'engineering' do módulo upstream"
+  type        = string
+  default     = "NGO-Core"
+}
+
 variable "vpc_id" {
   description = "ID da VPC onde a instância será criada"
   type        = string

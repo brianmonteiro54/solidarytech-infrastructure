@@ -73,12 +73,14 @@ module "rds" {
 module "dynamodb_volunteers" {
   source = "github.com/brianmonteiro54/terraform-aws-dynamodb//modules/dynamodb?ref=8a55060136580d55f3953de4116ce485ca9e1b11"
 
-  table_name        = var.dynamodb_table_name
+  # Apenas o nome lógico — o módulo prefixa com table_name_prefix automaticamente.
+  # Resultado final: "${name_prefix}-${table_name}" → "solidarytech-prod-volunteers"
+  table_name        = "volunteers"
   table_name_prefix = var.name_prefix
   environment       = var.environment
 
   # --- Schema ---
-  hash_key = "volunteer_id"
+  hash_key   = "volunteer_id"
   attributes = [
     {
       name = "volunteer_id"
