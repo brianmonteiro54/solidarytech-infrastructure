@@ -88,11 +88,11 @@ variable "enabled_cluster_log_types" {
 variable "nodegroups" {
   description = "Configuração dos node groups (managed)"
   type        = any
-  default = {
+  default     = {
     workers = {
-      desired_size = 2
-      min_size     = 2
-      max_size     = 4
+      desired_size  = 2
+      min_size      = 2
+      max_size      = 4
       capacity_type = "ON_DEMAND"
       ami_type      = "AL2_x86_64"
     }
@@ -120,7 +120,7 @@ variable "launch_template_volume_size" {
 variable "addons" {
   description = "Mapa de addons EKS (vpc-cni, coredns, kube-proxy, ebs-csi)"
   type        = any
-  default = {
+  default     = {
     vpc_cni = {
       addon_name    = "vpc-cni"
       addon_version = null

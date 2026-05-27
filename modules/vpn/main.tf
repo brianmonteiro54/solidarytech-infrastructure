@@ -44,7 +44,7 @@ module "pritunl_vpn" {
   create_kms_key        = false
 
   # --- Security Group (criado pelo módulo, regras explícitas) ---
-  create_security_group = true
+  create_security_group        = true
   security_group_ingress_rules = [
     {
       from_port   = 443

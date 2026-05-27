@@ -66,6 +66,7 @@ module "eks" {
     http_endpoint               = "enabled"
     http_tokens                 = "required" # IMDSv2 obrigatório (segurança)
     http_put_response_hop_limit = 2
+    instance_metadata_tags      = "enabled" # Permite acessar tags via metadata service
   }
 
   launch_template_worker_tag         = "${var.name_prefix}-eks-worker"
