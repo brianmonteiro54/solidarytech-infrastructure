@@ -84,6 +84,12 @@ variable "enabled_cluster_log_types" {
   default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
+variable "cluster_deletion_protection" {
+  description = "Proteção contra exclusão acidental do cluster EKS (dev: false, prod: true)"
+  type        = bool
+  default     = false
+}
+
 # -----------------------------------------------------------------------------
 # Node Groups (workers)
 # -----------------------------------------------------------------------------

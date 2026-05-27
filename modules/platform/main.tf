@@ -48,7 +48,7 @@ module "eks" {
   authentication_mode                         = "API_AND_CONFIG_MAP"
   bootstrap_cluster_creator_admin_permissions = true
   support_type                                = "STANDARD"
-  deletion_protection                         = false
+  deletion_protection                         = var.cluster_deletion_protection
 
   # --- Launch Template ---
   launch_template_name                   = "${var.name_prefix}-eks-lt"

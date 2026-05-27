@@ -56,6 +56,9 @@ module "databases" {
   private_subnet_ids = module.networking.private_subnet_ids
   allowed_sg_id      = module.networking.eks_workers_sg_id
   rds_databases      = local.rds_databases
+
+  # Deletion protection (dev: false, prod: true)
+  rds_deletion_protection = var.rds_deletion_protection
 }
 
 # -----------------------------------------------------------------------------
@@ -94,6 +97,9 @@ module "platform" {
   private_subnet_ids = module.networking.private_subnet_ids
   workers_sg_id      = module.networking.eks_workers_sg_id
   vpn_sg_id          = module.vpn.security_group_id
+
+  # Deletion protection (dev: false, prod: true)
+  cluster_deletion_protection = var.cluster_deletion_protection
 
   # IAM (AWS Academy: reusa LabRole para tudo)
   cluster_role_arn = data.aws_iam_role.lab_role.arn

@@ -25,6 +25,12 @@ enable_nat_gateway = true
 single_nat_gateway = false # ← 1 NAT por AZ (HA, ~$64/mês mas sem SPOF)
 
 # -----------------------------------------------------------------------------
+# Deletion Protection (PROD: tudo ligado — protege contra destroy acidental)
+# -----------------------------------------------------------------------------
+cluster_deletion_protection = true
+rds_deletion_protection     = true
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
 # IMPORTANTE: NUNCA commitar com valores reais. Use GitHub Secrets.
@@ -38,10 +44,9 @@ single_nat_gateway = false # ← 1 NAT por AZ (HA, ~$64/mês mas sem SPOF)
 # -----------------------------------------------------------------------------
 # Os defaults dos módulos são FinOps-friendly. Em PROD vale ativar:
 #
-# RDS — Multi-AZ + proteção (requer ajuste em modules/databases/variables.tf)
+# RDS — Multi-AZ + retenção estendida
 #   rds_multi_az                = true   # Standby síncrono em outra AZ
 #   rds_instance_class          = "db.t3.small"
 #   rds_max_allocated_storage   = 100
 #   rds_skip_final_snapshot     = false  # Sempre tira snapshot ao destruir
-#   rds_deletion_protection     = true   # Proteção contra delete acidental
 #   rds_backup_retention_period = 14     # 14 dias de backup
