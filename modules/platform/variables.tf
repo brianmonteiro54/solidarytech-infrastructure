@@ -59,9 +59,11 @@ variable "node_role_arn" {
 # Configuração do Cluster
 # -----------------------------------------------------------------------------
 variable "cluster_version" {
-  description = "Versão do Kubernetes (1.33 em standard support, AL2023 default - mai/2026)"
+  description = <<-EOT
+    Versão do Kubernetes EKS. Padrão: 1.34
+  EOT
   type        = string
-  default     = "1.33"
+  default     = "1.34"
 }
 
 variable "endpoint_private_access" {
