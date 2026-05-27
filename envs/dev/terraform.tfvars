@@ -1,8 +1,10 @@
 # =============================================================================
 # DEV Environment — Variáveis
 # =============================================================================
-# Apenas valores que DIFEREM dos defaults. Os defaults dos módulos já são
-# adequados para dev (FinOps friendly).
+# Ambiente de desenvolvimento. Otimizado para FinOps:
+#   - 1 NAT Gateway (vs 2 em prod)
+#   - Multi-AZ desligado nos RDS
+#   - Deletion protection desligado
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -15,15 +17,18 @@ cost_center = "NGO-Core"
 owner       = "DevOps-Team"
 
 # -----------------------------------------------------------------------------
+# Networking (FinOps)
+# -----------------------------------------------------------------------------
+enable_nat_gateway = true
+single_nat_gateway = true # ← 1 NAT só (economiza ~$32/mês vs HA)
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
-# IMPORTANTE: NUNCA commitar este arquivo com valores reais.
-# Use variáveis de ambiente em CI/CD:
-#   export TF_VAR_aws_access_key_id="..."
-#   export TF_VAR_aws_secret_access_key="..."
-#   export TF_VAR_aws_session_token="..."
-#
-# Ou crie um arquivo `secrets.auto.tfvars` (que está no .gitignore)
+# IMPORTANTE: NUNCA commitar com valores reais. Use:
+#   - GitHub Secrets em CI/CD (recomendado)
+#   - Variáveis de ambiente: TF_VAR_aws_access_key_id="..."
+#   - secrets.auto.tfvars (no .gitignore)
 # -----------------------------------------------------------------------------
 # aws_access_key_id     = ""
 # aws_secret_access_key = ""

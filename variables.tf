@@ -41,6 +41,25 @@ variable "owner" {
 }
 
 # -----------------------------------------------------------------------------
+# Networking — NAT Gateway (FinOps)
+# -----------------------------------------------------------------------------
+# Por ambiente:
+#   dev  → single_nat_gateway = true   (1 NAT, ~$32/mês, sem HA)
+#   prod → single_nat_gateway = false  (2 NATs, ~$64/mês, HA entre AZs)
+# -----------------------------------------------------------------------------
+variable "enable_nat_gateway" {
+  description = "Habilita NAT Gateway para acesso outbound das subnets privadas"
+  type        = bool
+  default     = true
+}
+
+variable "single_nat_gateway" {
+  description = "true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod)"
+  type        = bool
+  default     = true
+}
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy (sessão temporária)
 # -----------------------------------------------------------------------------
 # Necessárias para passar como user_data ao bootstrap EC2.
