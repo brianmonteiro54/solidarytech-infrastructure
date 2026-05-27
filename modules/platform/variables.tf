@@ -144,7 +144,7 @@ variable "launch_template_volume_size" {
 variable "addons" {
   description = "Mapa de addons EKS. IMPORTANTE: a chave do map vira o addon_name na AWS, então use hífens (vpc-cni, kube-proxy) não underscores."
   type        = any
-  default     = {
+  default = {
     # Chaves DEVEM ser os nomes oficiais da AWS (com hífen!)
     # Ref: aws_eks_addon.this usa each.key como addon_name no módulo upstream
     "vpc-cni" = {
