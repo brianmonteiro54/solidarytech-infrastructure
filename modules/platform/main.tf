@@ -72,8 +72,9 @@ module "eks" {
   launch_template_worker_tag         = "${var.name_prefix}-eks-worker"
   launch_template_tag_resource_types = ["instance", "volume"]
 
-  # --- Node Groups ---
+  # --- Node Groups
   nodegroups                = var.nodegroups
+  nodegroup_az_mapping      = var.nodegroup_az_mapping
   nodegroup_max_unavailable = 1
 
   # --- Addons (vpc-cni, coredns, kube-proxy) ---

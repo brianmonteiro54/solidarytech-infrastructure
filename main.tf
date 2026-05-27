@@ -60,12 +60,17 @@ module "databases" {
 module "vpn" {
   source = "./modules/vpn"
 
-  name_prefix   = local.name_prefix
-  environment   = var.environment
-  cost_center   = var.cost_center
-  vpc_id        = module.networking.vpc_id
-  subnet_id     = module.networking.public_subnet_ids[0]
-  instance_role = data.aws_iam_role.lab_role.name
+  name_prefix = local.name_prefix
+  environment = var.environment
+  cost_center = var.cost_center
+  vpc_id      = module.networking.vpc_id
+  subnet_id   = module.networking.public_subnet_ids[0]
+  # AWS Academy: LabInstanceProfile é o ÚNICO instance profile disponível.
+  # NOTA: instance_role espera um Instance Profile *name*, não o Role name.
+  # No Academy, ambos são pré-criados, mas têm nomes diferentes:
+  #   - Role: "LabRole"
+  #   - Instance Profile: "LabInstanceProfile"  ← esse que vai aqui
+  instance_role = "LabInstanceProfile"
 }
 
 # -----------------------------------------------------------------------------

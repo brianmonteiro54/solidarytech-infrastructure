@@ -63,9 +63,9 @@ variable "rds_engine" {
 }
 
 variable "rds_engine_version" {
-  description = "Versão da engine"
+  description = "Versão da engine PostgreSQL"
   type        = string
-  default     = "15.7"
+  default     = "18.1"
 }
 
 variable "rds_instance_class" {

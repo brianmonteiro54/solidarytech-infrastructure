@@ -59,9 +59,11 @@ variable "node_role_arn" {
 # Configuração do Cluster
 # -----------------------------------------------------------------------------
 variable "cluster_version" {
-  description = "Versão do Kubernetes"
+  description = <<-EOT
+    Versão do Kubernetes EKS. Padrão: 1.34
+  EOT
   type        = string
-  default     = "1.31"
+  default     = "1.34"
 }
 
 variable "endpoint_private_access" {
@@ -86,16 +88,38 @@ variable "enabled_cluster_log_types" {
 # Node Groups (workers)
 # -----------------------------------------------------------------------------
 variable "nodegroups" {
-  description = "Configuração dos node groups (managed). Schema do módulo upstream: scaling_min/scaling_max/scaling_desired."
+  description = <<-EOT
+    Configuração dos node groups (managed). Schema do módulo upstream:
+    scaling_min/scaling_max/scaling_desired (não desired_size/min_size/max_size).
+
+    Padrão: 2 nodegroups, um por AZ (pinning via nodegroup_az_mapping).
+    Cada nodegroup escala independentemente, permitindo balanceamento granular.
+  EOT
   type        = any
   default = {
-    workers = {
+    "solidarytech-private-1a" = {
       scaling_desired = 2
-      scaling_min     = 2
+      scaling_min     = 1
       scaling_max     = 4
       capacity_type   = "ON_DEMAND"
-      ami_type        = "AL2_x86_64"
+      ami_type        = "AL2023_x86_64_STANDARD"
     }
+    "solidarytech-private-1b" = {
+      scaling_desired = 2
+      scaling_min     = 1
+      scaling_max     = 4
+      capacity_type   = "ON_DEMAND"
+      ami_type        = "AL2023_x86_64_STANDARD"
+    }
+  }
+}
+
+variable "nodegroup_az_mapping" {
+  description = "Pinning de nodegroup para subnet específica (índice no array private_subnet_ids)"
+  type        = map(number)
+  default = {
+    "solidarytech-private-1a" = 0 # primeira subnet privada (AZ a)
+    "solidarytech-private-1b" = 1 # segunda subnet privada (AZ b)
   }
 }
 
@@ -118,19 +142,18 @@ variable "launch_template_volume_size" {
 # Addons (instalados pelo EKS, não pelo bootstrap)
 # -----------------------------------------------------------------------------
 variable "addons" {
-  description = "Mapa de addons EKS (vpc-cni, coredns, kube-proxy, ebs-csi)"
+  description = "Mapa de addons EKS. IMPORTANTE: a chave do map vira o addon_name na AWS, então use hífens (vpc-cni, kube-proxy) não underscores."
   type        = any
   default = {
-    vpc_cni = {
-      addon_name    = "vpc-cni"
+    # Chaves DEVEM ser os nomes oficiais da AWS (com hífen!)
+    # Ref: aws_eks_addon.this usa each.key como addon_name no módulo upstream
+    "vpc-cni" = {
       addon_version = null
     }
     coredns = {
-      addon_name    = "coredns"
       addon_version = null
     }
-    kube_proxy = {
-      addon_name    = "kube-proxy"
+    "kube-proxy" = {
       addon_version = null
     }
   }
