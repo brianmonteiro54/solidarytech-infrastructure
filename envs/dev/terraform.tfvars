@@ -23,6 +23,12 @@ enable_nat_gateway = true
 single_nat_gateway = true # ← 1 NAT só (economiza ~$32/mês vs HA)
 
 # -----------------------------------------------------------------------------
+# Deletion Protection (DEV: tudo desligado pra permitir destroy rápido)
+# -----------------------------------------------------------------------------
+cluster_deletion_protection = false
+rds_deletion_protection     = false
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
 # IMPORTANTE: NUNCA commitar com valores reais. Use:

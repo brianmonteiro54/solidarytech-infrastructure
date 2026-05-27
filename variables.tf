@@ -60,6 +60,25 @@ variable "single_nat_gateway" {
 }
 
 # -----------------------------------------------------------------------------
+# Deletion Protection (recursos críticos)
+# -----------------------------------------------------------------------------
+# Por ambiente:
+#   dev  → false  (permite destroy rápido)
+#   prod → true   (protege contra destroy acidental do cluster/RDS)
+# -----------------------------------------------------------------------------
+variable "cluster_deletion_protection" {
+  description = "Proteção contra exclusão acidental do cluster EKS (true em prod)"
+  type        = bool
+  default     = false
+}
+
+variable "rds_deletion_protection" {
+  description = "Proteção contra exclusão acidental dos bancos RDS (true em prod)"
+  type        = bool
+  default     = false
+}
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy (sessão temporária)
 # -----------------------------------------------------------------------------
 # Necessárias para passar como user_data ao bootstrap EC2.
