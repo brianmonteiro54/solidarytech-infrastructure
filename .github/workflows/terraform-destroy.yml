@@ -1,0 +1,89 @@
+name: Terraform Destroy
+run-name: "Destroy — ${{ inputs.environment }} (por ${{ github.actor }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Ambiente alvo'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+      confirm_env:
+        description: 'Digite o nome do ambiente para confirmar'
+        required: true
+        type: string
+      reason:
+        description: 'Justificativa (obrigatório)'
+        required: true
+        type: string
+      target_resources:
+        description: 'Recursos específicos (-target). Vazio = destroy completo.'
+        required: false
+        type: string
+        default: ''
+      skip_state_backup:
+        description: 'Pular backup do state?'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: destroy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Validação de inputs localmente ──
+  validate-inputs:
+    name: Validate Inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      env_name: ${{ steps.validate.outputs.env_name }}
+      tfvars_path: ${{ steps.validate.outputs.tfvars_path }}
+      backend_path: ${{ steps.validate.outputs.backend_path }}
+
+    steps:
+      - name: Confirm environment match
+        id: validate
+        run: |
+          if [[ "${{ inputs.environment }}" != "${{ inputs.confirm_env }}" ]]; then
+            echo "::error::Confirmação falhou: selecionou '${{ inputs.environment }}' mas digitou '${{ inputs.confirm_env }}'."
+            exit 1
+          fi
+          if [[ -z "${{ inputs.reason }}" ]]; then
+            echo "::error::Justificativa é obrigatória."
+            exit 1
+          fi
+          ENV="${{ inputs.environment }}"
+          {
+            echo "env_name=$ENV"
+            echo "tfvars_path=envs/${ENV}/terraform.tfvars"
+            echo "backend_path=envs/${ENV}/backend.hcl"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Production safety check
+        if: inputs.environment == 'prod'
+        run: echo "::warning::⚠️ DESTROY em PRODUÇÃO solicitado por ${{ github.actor }}"
+
+  # ── Chama pipeline central ──
+  destroy:
+    needs: validate-inputs
+    uses: brianmonteiro54/devops-template/.github/workflows/terraform-destroy.yml@v2.1.0
+    with:
+      env-name: ${{ needs.validate-inputs.outputs.env_name }}
+      tfvars-path: ${{ needs.validate-inputs.outputs.tfvars_path }}
+      backend-path: ${{ needs.validate-inputs.outputs.backend_path }}
+      reason: ${{ inputs.reason }}
+      target-resources: ${{ inputs.target_resources }}
+      skip-state-backup: ${{ inputs.skip_state_backup }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}

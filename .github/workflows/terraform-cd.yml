@@ -1,0 +1,100 @@
+name: Terraform CD
+run-name: "CD — ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref_name }} (${{ github.event_name }})"
+
+on:
+  workflow_run:
+    workflows: ["Terraform CI"]
+    branches: [main, developer]
+    types: [completed]
+
+  workflow_dispatch:
+    inputs:
+      force_apply:
+        description: 'Forçar apply mesmo sem mudanças?'
+        required: false
+        type: boolean
+        default: false
+      reason:
+        description: 'Justificativa (obrigatório em prod)'
+        required: false
+        type: string
+        default: ''
+
+concurrency:
+  group: cd-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  # ── Resolve environment localmente ──
+  resolve-env:
+    name: Resolve Environment
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      env_name: ${{ steps.resolve.outputs.env_name }}
+      tfvars_path: ${{ steps.resolve.outputs.tfvars_path }}
+      backend_path: ${{ steps.resolve.outputs.backend_path }}
+      checkout_ref: ${{ steps.resolve.outputs.checkout_ref }}
+
+    steps:
+      - name: Abort if CI failed
+        if: >-
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion != 'success'
+        run: |
+          echo "::error::CI terminou com '${{ github.event.workflow_run.conclusion }}' — CD abortado."
+          exit 1
+
+      - name: Map branch → environment
+        id: resolve
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            BRANCH="${{ github.event.workflow_run.head_branch }}"
+            REF="${{ github.event.workflow_run.head_sha }}"
+          else
+            BRANCH="${{ github.ref_name }}"
+            REF="${{ github.sha }}"
+          fi
+
+          case "$BRANCH" in
+            main)      ENV="prod" ;;
+            developer) ENV="dev"  ;;
+            *) echo "::error::Branch não mapeada: $BRANCH"; exit 1 ;;
+          esac
+
+          {
+            echo "env_name=$ENV"
+            echo "tfvars_path=envs/${ENV}/terraform.tfvars"
+            echo "backend_path=envs/${ENV}/backend.hcl"
+            echo "checkout_ref=$REF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate manual deploy inputs
+        if: >-
+          github.event_name == 'workflow_dispatch' &&
+          steps.resolve.outputs.env_name == 'prod' &&
+          inputs.reason == ''
+        run: |
+          echo "::error::Deploy manual em prod requer justificativa."
+          exit 1
+
+  # ── Chama pipeline central ──
+  deploy:
+    needs: resolve-env
+    uses: brianmonteiro54/devops-template/.github/workflows/terraform-cd.yml@v2.1.0
+    with:
+      env-name: ${{ needs.resolve-env.outputs.env_name }}
+      tfvars-path: ${{ needs.resolve-env.outputs.tfvars_path }}
+      backend-path: ${{ needs.resolve-env.outputs.backend_path }}
+      checkout-ref: ${{ needs.resolve-env.outputs.checkout_ref }}
+      force-apply: ${{ inputs.force_apply == true }}
+      reason: ${{ inputs.reason || '' }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}

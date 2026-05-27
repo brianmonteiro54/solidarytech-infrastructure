@@ -1,0 +1,41 @@
+name: Terraform CI
+run-name: "CI — ${{ github.ref_name }} (${{ github.event_name }})"
+
+on:
+  pull_request:
+    branches: [main, developer]
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '**.hcl'
+      - '.github/workflows/terraform-ci.yml'
+      - '.tflint.hcl'
+  push:
+    branches: [main, developer]
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '**.hcl'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  security-events: write
+
+jobs:
+  ci:
+    uses: brianmonteiro54/devops-template/.github/workflows/terraform-ci.yml@v2.1.0
+    with:
+      terraform-docs-working-dir: '.'
+      environments: '[{"branch":"main","env_name":"prod"},{"branch":"developer","env_name":"dev"}]'
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}

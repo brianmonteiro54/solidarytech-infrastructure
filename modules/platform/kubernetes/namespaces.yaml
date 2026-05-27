@@ -1,0 +1,43 @@
+# =============================================================================
+# SOLIDARYTECH - NAMESPACES
+# =============================================================================
+# Namespaces para cada microsserviço da plataforma + observabilidade + GitOps
+# =============================================================================
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: solidarytech-ngo
+  labels:
+    app.kubernetes.io/part-of: solidarytech
+    app.kubernetes.io/component: ngo
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: solidarytech-donation
+  labels:
+    app.kubernetes.io/part-of: solidarytech
+    app.kubernetes.io/component: donation
+    # Hot Path - marca para SRE/Error Budget
+    solidarytech.io/criticality: hot-path
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: solidarytech-volunteer
+  labels:
+    app.kubernetes.io/part-of: solidarytech
+    app.kubernetes.io/component: volunteer
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    app.kubernetes.io/part-of: solidarytech
+    app.kubernetes.io/component: observability
