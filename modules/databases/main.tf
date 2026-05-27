@@ -12,6 +12,7 @@
 # RDS (for_each: ngo_db, donation_db)
 # -----------------------------------------------------------------------------
 module "rds" {
+  # checkov:skip=CKV_AWS_293:deletion_protection controlled via var.rds_deletion_protection (true in prod tfvars)
   for_each = var.rds_databases
 
   source = "github.com/brianmonteiro54/terraform-aws-rds-database//modules/rds?ref=d4a0e3993842e0876d3d918573ff895145befa2a"
@@ -70,8 +71,7 @@ module "rds" {
 # DynamoDB — Volunteers
 # -----------------------------------------------------------------------------
 module "dynamodb_volunteers" {
-  # TODO: substituir ?ref=main por hash imutável após git ls-remote (boa prática mostrada na Fase 2)
-  source = "github.com/brianmonteiro54/terraform-aws-dynamodb//modules/dynamodb?ref=main"
+  source = "github.com/brianmonteiro54/terraform-aws-dynamodb//modules/dynamodb?ref=8a55060136580d55f3953de4116ce485ca9e1b11"
 
   table_name        = var.dynamodb_table_name
   table_name_prefix = var.name_prefix

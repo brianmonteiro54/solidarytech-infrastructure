@@ -17,6 +17,8 @@ locals {
 
 module "pritunl_vpn" {
   # checkov:skip=CKV2_AWS_5:Security Group is attached internally by module
+  # checkov:skip=CKV_AWS_88:VPN appliance requires public IP for client connections (intentional)
+  # checkov:skip=CKV2_AWS_19:EIP attached to VPN EC2 (false positive - Checkov doesn't detect via module)
   source = "github.com/brianmonteiro54/terraform-aws-ec2//modules/ec2?ref=17c9a7d61d695ae4fa4033e091c2744377e583ac"
 
   # --- Identificação ---

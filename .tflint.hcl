@@ -1,9 +1,17 @@
 # =============================================================================
 # TFLint Configuration
 # =============================================================================
+# call_module_type = "local" → o TFLint inspeciona apenas módulos com source
+# local (ex.: "./modules/..."). Módulos remotos (Git) NÃO são recarregados
+# pelo TFLint, evitando o erro "module not found" quando o lint é executado
+# em submódulos sem `terraform init` prévio.
+#
+# Para validação completa que inclui módulos remotos, use "terraform validate"
+# após "terraform init" (passos separados no pipeline CI).
+# =============================================================================
 
 config {
-  call_module_type = "all"
+  call_module_type = "local"
   force            = false
 }
 

@@ -9,7 +9,6 @@
 
 module "sqs_donations" {
   # checkov:skip=CKV_AWS_27:KMS desabilitado em Academy (LabRole sem permissão)
-  # TODO: substituir ?ref=main por hash imutável após git ls-remote (boa prática mostrada na Fase 2)
   source = "github.com/brianmonteiro54/terraform-aws-sqs//modules/sqs?ref=474eeb54ac7af491c1d921a6d78746cf920647c2"
 
   # --- Identificação ---

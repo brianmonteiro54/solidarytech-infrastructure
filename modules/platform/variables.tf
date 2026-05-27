@@ -86,15 +86,15 @@ variable "enabled_cluster_log_types" {
 # Node Groups (workers)
 # -----------------------------------------------------------------------------
 variable "nodegroups" {
-  description = "Configuração dos node groups (managed)"
+  description = "Configuração dos node groups (managed). Schema do módulo upstream: scaling_min/scaling_max/scaling_desired."
   type        = any
   default = {
     workers = {
-      desired_size  = 2
-      min_size      = 2
-      max_size      = 4
-      capacity_type = "ON_DEMAND"
-      ami_type      = "AL2_x86_64"
+      scaling_desired = 2
+      scaling_min     = 2
+      scaling_max     = 4
+      capacity_type   = "ON_DEMAND"
+      ami_type        = "AL2_x86_64"
     }
   }
 }
