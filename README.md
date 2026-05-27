@@ -175,7 +175,7 @@ make clean             # Limpa arquivos locais temporários
 
 ---
 
-## 🎯 Melhorias Aplicadas (Feedback Fase 2 → Fase 5)
+## 🎯 Melhorias Aplicadas (Feedback Fase 4 → Fase 5)
 
 | # | Feedback do Avaliador | Aplicação |
 |---|---|---|
@@ -246,22 +246,3 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 - [ ] **Etapa 10**: DR — Multi-region failover (Velero/Backup-Restore)
 
 ---
-
-## 🤝 Sources dos Módulos
-
-Módulos Terraform versionados em repositórios próprios (reuso entre projetos):
-
-- `terraform-aws-vpc-network` — VPC com subnets dinâmicas
-- `terraform-aws-ec2` — EC2 com SG e EIP opcionais
-- `terraform-aws-ecr` — ECR com lifecycle policies
-- `terraform-aws-rds-database` — RDS multi-engine
-- `terraform-aws-dynamodb` — DynamoDB com PITR e GSI
-- `terraform-aws-sqs` — SQS + DLQ + CloudWatch Alarms
-- `terraform-aws-eks-platform` — EKS Cluster + Node Groups + Addons
-- `terraform-aws-eks-bootstrap` — Bootstrap via EC2 efêmera
-
----
-
-## 👤 Autor
-
-**Brian Monteiro** — Pós-Graduação DevOps/Cloud — FIAP — 2026
