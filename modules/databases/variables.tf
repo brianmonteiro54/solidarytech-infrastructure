@@ -63,9 +63,9 @@ variable "rds_engine" {
 }
 
 variable "rds_engine_version" {
-  description = "Versão da engine"
+  description = "Versão da engine PostgreSQL (15.17 é a versão mais recente da major 15.x em mai/2026)"
   type        = string
-  default     = "15.7"
+  default     = "15.17"
 }
 
 variable "rds_instance_class" {

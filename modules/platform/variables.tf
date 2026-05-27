@@ -59,9 +59,9 @@ variable "node_role_arn" {
 # Configuração do Cluster
 # -----------------------------------------------------------------------------
 variable "cluster_version" {
-  description = "Versão do Kubernetes"
+  description = "Versão do Kubernetes (1.33 em standard support, AL2023 default - mai/2026)"
   type        = string
-  default     = "1.31"
+  default     = "1.33"
 }
 
 variable "endpoint_private_access" {
@@ -94,7 +94,8 @@ variable "nodegroups" {
       scaling_min     = 2
       scaling_max     = 4
       capacity_type   = "ON_DEMAND"
-      ami_type        = "AL2_x86_64"
+      # AL2023 é o default a partir do EKS 1.33 (AL2 foi descontinuado)
+      ami_type = "AL2023_x86_64_STANDARD"
     }
   }
 }
