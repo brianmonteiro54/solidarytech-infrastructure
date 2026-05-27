@@ -121,19 +121,18 @@ variable "launch_template_volume_size" {
 # Addons (instalados pelo EKS, não pelo bootstrap)
 # -----------------------------------------------------------------------------
 variable "addons" {
-  description = "Mapa de addons EKS (vpc-cni, coredns, kube-proxy, ebs-csi)"
+  description = "Mapa de addons EKS. IMPORTANTE: a chave do map vira o addon_name na AWS, então use hífens (vpc-cni, kube-proxy) não underscores."
   type        = any
   default = {
-    vpc_cni = {
-      addon_name    = "vpc-cni"
+    # Chaves DEVEM ser os nomes oficiais da AWS (com hífen!)
+    # Ref: aws_eks_addon.this usa each.key como addon_name no módulo upstream
+    "vpc-cni" = {
       addon_version = null
     }
     coredns = {
-      addon_name    = "coredns"
       addon_version = null
     }
-    kube_proxy = {
-      addon_name    = "kube-proxy"
+    "kube-proxy" = {
       addon_version = null
     }
   }
