@@ -16,6 +16,10 @@ module "networking" {
   name_prefix  = local.name_prefix
   environment  = var.environment
   cluster_name = "${local.name_prefix}-eks"
+
+  # NAT Gateway — FinOps: dev usa single_nat=true, prod usa false (HA)
+  enable_nat_gateway = var.enable_nat_gateway
+  single_nat_gateway = var.single_nat_gateway
 }
 
 # -----------------------------------------------------------------------------
