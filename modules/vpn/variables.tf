@@ -75,11 +75,11 @@ variable "create_eip" {
 variable "mongo_image_tag" {
   description = "Tag do MongoDB (sem 'latest' — pinning explícito)"
   type        = string
-  default     = "7.0.14" # LTS estável (out/2024)
+  default     = "7.0.34" # LTS estável (out/2024)
 }
 
 variable "pritunl_image_tag" {
   description = "Tag da imagem Pritunl (sem 'latest')"
   type        = string
-  default     = "1.32.4805.95-3" # Última estável do goofball222/pritunl
+  default     = "1.32.3897.75"
 }
