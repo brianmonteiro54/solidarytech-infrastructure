@@ -88,17 +88,38 @@ variable "enabled_cluster_log_types" {
 # Node Groups (workers)
 # -----------------------------------------------------------------------------
 variable "nodegroups" {
-  description = "Configuração dos node groups (managed). Schema do módulo upstream: scaling_min/scaling_max/scaling_desired."
+  description = <<-EOT
+    Configuração dos node groups (managed). Schema do módulo upstream:
+    scaling_min/scaling_max/scaling_desired (não desired_size/min_size/max_size).
+
+    Padrão: 2 nodegroups, um por AZ (pinning via nodegroup_az_mapping).
+    Cada nodegroup escala independentemente, permitindo balanceamento granular.
+  EOT
   type        = any
   default = {
-    workers = {
-      scaling_desired = 2
-      scaling_min     = 2
+    "solidarytech-private-1a" = {
+      scaling_desired = 1
+      scaling_min     = 1
       scaling_max     = 4
       capacity_type   = "ON_DEMAND"
-      # AL2023 é o default a partir do EKS 1.33 (AL2 foi descontinuado)
-      ami_type = "AL2023_x86_64_STANDARD"
+      ami_type        = "AL2023_x86_64_STANDARD"
     }
+    "solidarytech-private-1b" = {
+      scaling_desired = 1
+      scaling_min     = 1
+      scaling_max     = 4
+      capacity_type   = "ON_DEMAND"
+      ami_type        = "AL2023_x86_64_STANDARD"
+    }
+  }
+}
+
+variable "nodegroup_az_mapping" {
+  description = "Pinning de nodegroup para subnet específica (índice no array private_subnet_ids)"
+  type        = map(number)
+  default = {
+    "solidarytech-private-1a" = 0 # primeira subnet privada (AZ a)
+    "solidarytech-private-1b" = 1 # segunda subnet privada (AZ b)
   }
 }
 
@@ -123,7 +144,7 @@ variable "launch_template_volume_size" {
 variable "addons" {
   description = "Mapa de addons EKS. IMPORTANTE: a chave do map vira o addon_name na AWS, então use hífens (vpc-cni, kube-proxy) não underscores."
   type        = any
-  default = {
+  default     = {
     # Chaves DEVEM ser os nomes oficiais da AWS (com hífen!)
     # Ref: aws_eks_addon.this usa each.key como addon_name no módulo upstream
     "vpc-cni" = {
