@@ -98,14 +98,14 @@ variable "nodegroups" {
   type        = any
   default = {
     "solidarytech-private-1a" = {
-      scaling_desired = 1
+      scaling_desired = 2
       scaling_min     = 1
       scaling_max     = 4
       capacity_type   = "ON_DEMAND"
       ami_type        = "AL2023_x86_64_STANDARD"
     }
     "solidarytech-private-1b" = {
-      scaling_desired = 1
+      scaling_desired = 2
       scaling_min     = 1
       scaling_max     = 4
       capacity_type   = "ON_DEMAND"
