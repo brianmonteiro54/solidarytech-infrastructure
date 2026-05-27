@@ -1,0 +1,46 @@
+# Egress irrestrito
+AVD-AWS-0104
+
+# ECR scan
+AVD-AWS-0030
+
+# RDS backup
+AVD-AWS-0077
+AVD-AWS-0177
+
+# EKS logging
+AVD-AWS-0038
+
+# SQS policy
+AVD-AWS-0097
+
+# Subnet pública
+AVD-AWS-0164
+
+# VPC Flow Logs
+AVD-AWS-0178
+
+
+# --- Ingress NGINX Specific ---
+# Root file system not read-only (Ingress precisa escrever logs/temp)
+KSV-0014
+# Capabilities added (NET_BIND_SERVICE para portas baixas)
+KSV-0022
+# ClusterRole/Role managing secrets (Ingress precisa ler certificados TLS)
+KSV-0041
+KSV-0113
+# Manage webhookconfigurations
+KSV-0114
+# Privileged ports < 1024 (Portas 80 e 443)
+KSV-0117
+# Default security context (Root privileges)
+KSV-0118
+# Untrusted registry (k8s.gcr.io ou registry.k8s.io às vezes não estão na allowlist padrão)
+KSV-0125
+# CPU/Memory limits/requests (Se não estiverem definidos no YAML)
+KSV-0011
+KSV-0015
+KSV-0016
+KSV-0018
+KSV-0020
+KSV-0021

@@ -1,0 +1,47 @@
+extends: default
+
+rules:
+  # Line length - permitir linhas mais longas para CI/CD workflows
+  line-length:
+    max: 120
+    level: warning
+
+  # Truthy - permitir on: sem aspas
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off']
+    check-keys: false
+
+  # Comments - mais flexível para documentação
+  comments:
+    min-spaces-from-content: 1
+
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  # Document start - não exigir --- em todos os arquivos
+  document-start:
+    present: false
+
+  # Hyphens
+  hyphens:
+    max-spaces-after: 1
+
+  # Empty lines
+  empty-lines:
+    max: 2
+
+  # Brackets
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+  # Key duplicates
+  key-duplicates: enable
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # New line at end of file
+  new-line-at-end-of-file: enable
