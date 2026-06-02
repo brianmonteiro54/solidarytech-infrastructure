@@ -85,7 +85,7 @@ locals {
     spec:
       project: default
       source:
-        repoURL: https://github.com/brianmonteiro54/solidarytech-gitops.git
+        repoURL: https://github.com/brianmonteiro54/solidarytech-monitoring-gitops.git
         targetRevision: main
         path: apps
         directory:
