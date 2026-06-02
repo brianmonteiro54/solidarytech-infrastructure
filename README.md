@@ -286,11 +286,13 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="input_aws_access_key_id"></a> [aws\_access\_key\_id](#input\_aws\_access\_key\_id) | AWS Access Key ID (sessão Academy) | `string` | n/a | yes |
 | <a name="input_aws_secret_access_key"></a> [aws\_secret\_access\_key](#input\_aws\_secret\_access\_key) | AWS Secret Access Key (sessão Academy) | `string` | n/a | yes |
 | <a name="input_aws_session_token"></a> [aws\_session\_token](#input\_aws\_session\_token) | AWS Session Token (sessão Academy) | `string` | n/a | yes |
+| <a name="input_cluster_deletion_protection"></a> [cluster\_deletion\_protection](#input\_cluster\_deletion\_protection) | Proteção contra exclusão acidental do cluster EKS (true em prod) | `bool` | `false` | no |
 | <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | Centro de custos para tags FinOps | `string` | `"NGO-Core"` | no |
 | <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Habilita NAT Gateway para acesso outbound das subnets privadas | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Ambiente de deploy (dev, staging, prod) - propagado em todas as tags | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Time responsável pelos recursos (tag FinOps/Governança) | `string` | `"DevOps-Team"` | no |
 | <a name="input_project"></a> [project](#input\_project) | Nome do projeto - usado em prefixos e tags | `string` | `"SolidaryTech"` | no |
+| <a name="input_rds_deletion_protection"></a> [rds\_deletion\_protection](#input\_rds\_deletion\_protection) | Proteção contra exclusão acidental dos bancos RDS (true em prod) | `bool` | `false` | no |
 | <a name="input_region"></a> [region](#input\_region) | Região AWS onde os recursos serão provisionados | `string` | `"us-east-1"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod) | `bool` | `true` | no |
 
