@@ -5,6 +5,8 @@
 resource "aws_secretsmanager_secret" "monitoring" {
   count = var.create_monitoring_secret ? 1 : 0
 
+  #checkov:skip=CKV_AWS_149
+  #checkov:skip=CKV2_AWS_57:Segredo guarda tokens de terceiros (Grafana/Discord/PagerDuty/New Relic) sem rotação automática nativa
   name                    = var.monitoring_secret_name
   description             = "SolidaryTech — credenciais do stack de observabilidade (Grafana, Discord, PagerDuty, New Relic). Consumido via External Secrets."
   recovery_window_in_days = var.recovery_window_in_days

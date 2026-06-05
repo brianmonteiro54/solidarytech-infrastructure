@@ -44,3 +44,6 @@ KSV-0016
 KSV-0018
 KSV-0020
 KSV-0021
+
+# Secret sem CMK própria — conta Academy usa aws/secretsmanager; CMK não viável no lab
+AVD-AWS-0098
