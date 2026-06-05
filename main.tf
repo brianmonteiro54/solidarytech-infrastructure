@@ -110,3 +110,16 @@ module "platform" {
   aws_secret_access_key = var.aws_secret_access_key
   aws_session_token     = var.aws_session_token
 }
+
+# -----------------------------------------------------------------------------
+# 7. Secrets — AWS Secrets Manager (consumido pelo External Secrets no cluster)
+# -----------------------------------------------------------------------------
+module "secrets" {
+  source = "./modules/secrets"
+
+  grafana_admin_user     = var.grafana_admin_user
+  grafana_admin_password = var.grafana_admin_password
+  discord_webhook_url    = var.discord_webhook_url
+  pagerduty_service_key  = var.pagerduty_service_key
+  new_relic_api_key      = var.new_relic_api_key
+}

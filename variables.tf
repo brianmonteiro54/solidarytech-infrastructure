@@ -100,3 +100,40 @@ variable "aws_session_token" {
   type        = string
   sensitive   = true
 }
+
+# -----------------------------------------------------------------------------
+# Observabilidade — segredo solidarytech/monitoring (Secrets Manager)
+# -----------------------------------------------------------------------------
+variable "grafana_admin_user" {
+  description = "Usuário admin do Grafana"
+  type        = string
+  default     = "admin"
+}
+
+variable "grafana_admin_password" {
+  description = "Senha admin do Grafana (TF_VAR_grafana_admin_password)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "discord_webhook_url" {
+  description = "Discord webhook para alertas/self-healing (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "pagerduty_service_key" {
+  description = "PagerDuty service/integration key (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "new_relic_api_key" {
+  description = "New Relic API key para export OTLP (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}

@@ -1,0 +1,56 @@
+# =============================================================================
+# Variáveis — Módulo secrets
+# =============================================================================
+
+variable "create_monitoring_secret" {
+  description = "Cria o segredo solidarytech/monitoring. Em conta AWS compartilhada por dev e prod, deixe true em APENAS UM ambiente — o segredo é único e referenciado pelo nome literal no GitOps."
+  type        = bool
+  default     = true
+}
+
+variable "monitoring_secret_name" {
+  description = "Nome do segredo no Secrets Manager. Deve casar com o remoteRef.key do ExternalSecret (solidarytech/monitoring)."
+  type        = string
+  default     = "solidarytech/monitoring"
+}
+
+variable "recovery_window_in_days" {
+  description = "Janela de recuperação ao destruir o segredo. 0 = exclusão imediata (conveniente em lab/dev); 7–30 recomendável em prod."
+  type        = number
+  default     = 0
+}
+
+# ---- Conteúdo do segredo (chaves esperadas pelo External Secrets) -----------
+variable "grafana_admin_user" {
+  description = "Usuário admin do Grafana (não sensível)."
+  type        = string
+  default     = "admin"
+}
+
+variable "grafana_admin_password" {
+  description = "Senha admin do Grafana. Forneça via TF_VAR_grafana_admin_password (nunca commit)."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "discord_webhook_url" {
+  description = "Webhook do Discord para alertas/self-healing. Opcional (vazio = sem notificação Discord)."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "pagerduty_service_key" {
+  description = "Service/Integration key do PagerDuty. Opcional."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "new_relic_api_key" {
+  description = "API key do New Relic (export OTLP). Opcional (vazio = sem export para New Relic)."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
