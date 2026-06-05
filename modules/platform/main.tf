@@ -12,7 +12,7 @@
 module "eks" {
   # checkov:skip=CKV_AWS_38:Public access desabilitado via endpoint_public_access
   # checkov:skip=CKV_AWS_37:Todos os tipos de log estão habilitados
-  source = "github.com/brianmonteiro54/terraform-aws-eks-platform//modules/eks?ref=116e4fa01cd755dbe0516249c6d916b52274ba6b"
+  source = "github.com/brianmonteiro54/terraform-aws-eks-platform//modules/eks?ref=2583f0cc17f16d4e253c8b500d495828126521c0"
 
   # --- Controle de Módulo (AWS Academy: reusa LabRole, não cria nada IAM) ---
   create_cluster         = true
