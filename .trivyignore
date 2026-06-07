@@ -11,6 +11,9 @@ AVD-AWS-0177
 # EKS logging
 AVD-AWS-0038
 
+# CloudWatch Log Group sem CMK própria — conta Academy não permite KMS (igual AVD-AWS-0098)
+AVD-AWS-0017
+
 # SQS policy
 AVD-AWS-0097
 

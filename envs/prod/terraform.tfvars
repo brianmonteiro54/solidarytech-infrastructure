@@ -31,6 +31,11 @@ cluster_deletion_protection = true
 rds_deletion_protection     = true
 
 # -----------------------------------------------------------------------------
+# CloudWatch Logs — Retenção do control plane (auditoria/compliance em prod)
+# -----------------------------------------------------------------------------
+cluster_log_retention_in_days = 90
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
 # IMPORTANTE: NUNCA commitar com valores reais. Use GitHub Secrets.

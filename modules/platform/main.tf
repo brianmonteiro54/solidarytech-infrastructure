@@ -7,6 +7,21 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# 0. CloudWatch Log Group do control plane (RETENÇÃO EXPLÍCITA)
+# -----------------------------------------------------------------------------
+resource "aws_cloudwatch_log_group" "eks" {
+  # checkov:skip=CKV_AWS_158:CMK não viável na conta AWS Academy (sem KMS, igual enable_secrets_encryption=false)
+  # checkov:skip=CKV_AWS_338:Retenção definida por ambiente via var.cluster_log_retention_in_days (FinOps: dev curto, prod estendido)
+  name              = "/aws/eks/${var.cluster_name}/cluster"
+  retention_in_days = var.cluster_log_retention_in_days
+
+  tags = {
+    Name      = "/aws/eks/${var.cluster_name}/cluster"
+    Component = "eks-control-plane-logs"
+  }
+}
+
+# -----------------------------------------------------------------------------
 # 1. EKS Cluster (módulo Git versionado)
 # -----------------------------------------------------------------------------
 module "eks" {
@@ -41,6 +56,7 @@ module "eks" {
   ip_family               = "ipv4"
 
   # --- Logs (observability) ---
+  # Escreve no log group aws_cloudwatch_log_group.eks (retenção controlada).
   cluster_logging_enabled   = true
   enabled_cluster_log_types = var.enabled_cluster_log_types
 
@@ -84,6 +100,7 @@ module "eks" {
   cluster_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
+  depends_on = [aws_cloudwatch_log_group.eks]
 }
 
 # -----------------------------------------------------------------------------

@@ -72,6 +72,19 @@ variable "cluster_deletion_protection" {
   default     = false
 }
 
+# -----------------------------------------------------------------------------
+# CloudWatch Logs — Retenção do control plane do EKS
+# -----------------------------------------------------------------------------
+#   dev  → janela curta (FinOps; logs de debug de curto prazo bastam)
+#   prod → janela estendida (auditoria/compliance)
+# Evita o default da AWS de "nunca expirar" em /aws/eks/<cluster>/cluster.
+# -----------------------------------------------------------------------------
+variable "cluster_log_retention_in_days" {
+  description = "Dias de retenção dos logs do control plane do EKS no CloudWatch (0 = nunca expira)"
+  type        = number
+  default     = 30
+}
+
 variable "rds_deletion_protection" {
   description = "Proteção contra exclusão acidental dos bancos RDS (true em prod)"
   type        = bool

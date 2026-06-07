@@ -84,6 +84,20 @@ variable "enabled_cluster_log_types" {
   default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
+variable "cluster_log_retention_in_days" {
+  description = "Retenção (dias) do CloudWatch Log Group do control plane do EKS (/aws/eks/<cluster>/cluster). 0 = nunca expira (NÃO recomendado)."
+  type        = number
+  default     = 30
+
+  validation {
+    condition = contains(
+      [0, 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653],
+      var.cluster_log_retention_in_days
+    )
+    error_message = "Valor inválido. Use um valor aceito pelo CloudWatch Logs (1,3,5,7,14,30,60,90,120,150,180,365,400,545,731,1096,1827,2192,2557,2922,3288,3653) ou 0 para nunca expirar."
+  }
+}
+
 variable "cluster_deletion_protection" {
   description = "Proteção contra exclusão acidental do cluster EKS (dev: false, prod: true)"
   type        = bool

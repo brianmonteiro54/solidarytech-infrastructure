@@ -101,6 +101,9 @@ module "platform" {
   # Deletion protection (dev: false, prod: true)
   cluster_deletion_protection = var.cluster_deletion_protection
 
+  # Retenção dos logs do control plane no CloudWatch (dev: curta, prod: estendida)
+  cluster_log_retention_in_days = var.cluster_log_retention_in_days
+
   # IAM (AWS Academy: reusa LabRole para tudo)
   cluster_role_arn = data.aws_iam_role.lab_role.arn
   node_role_arn    = data.aws_iam_role.lab_role.arn
