@@ -54,3 +54,10 @@ variable "new_relic_api_key" {
   default     = ""
   sensitive   = true
 }
+
+variable "anthropic_api_key" {
+  description = "API key da Claude API (Anthropic) para o resumo de incidentes com GenAI no self-healing. Opcional."
+  type        = string
+  default     = ""
+  sensitive   = true
+}

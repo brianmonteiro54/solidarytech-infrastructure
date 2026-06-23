@@ -31,6 +31,7 @@ resource "aws_secretsmanager_secret_version" "monitoring" {
     DISCORD_WEBHOOK_URL    = var.discord_webhook_url
     PAGERDUTY_SERVICE_KEY  = var.pagerduty_service_key
     NEW_RELIC_API_KEY      = var.new_relic_api_key
+    ANTHROPIC_API_KEY      = var.anthropic_api_key
   })
 
   lifecycle {

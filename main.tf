@@ -125,4 +125,5 @@ module "secrets" {
   discord_webhook_url    = var.discord_webhook_url
   pagerduty_service_key  = var.pagerduty_service_key
   new_relic_api_key      = var.new_relic_api_key
+  anthropic_api_key      = var.anthropic_api_key
 }
