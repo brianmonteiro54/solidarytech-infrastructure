@@ -151,44 +151,6 @@ variable "new_relic_api_key" {
   sensitive   = true
 }
 
-# =============================================================================
-# Variáveis do Segredo de Observabilidade (módulo secrets)
-# =============================================================================
-variable "grafana_admin_user" {
-  description = "Usuário admin do Grafana"
-  type        = string
-  default     = "admin"
-  sensitive   = true
-}
-
-variable "grafana_admin_password" {
-  description = "Senha admin do Grafana. Forneça via GitHub Secret (TF_VAR_grafana_admin_password)."
-  type        = string
-  default     = ""
-  sensitive   = true
-}
-
-variable "discord_webhook_url" {
-  description = "Webhook do Discord para alertas/self-healing. Opcional."
-  type        = string
-  default     = ""
-  sensitive   = true
-}
-
-variable "pagerduty_service_key" {
-  description = "Service/Integration key do PagerDuty. Opcional."
-  type        = string
-  default     = ""
-  sensitive   = true
-}
-
-variable "new_relic_api_key" {
-  description = "API key do New Relic (export OTLP). Opcional."
-  type        = string
-  default     = ""
-  sensitive   = true
-}
-
 variable "anthropic_api_key" {
   description = "API key da Claude API (Anthropic) para o resumo de incidentes com GenAI no self-healing (AIOps). Opcional."
   type        = string
