@@ -79,3 +79,11 @@ output "vpn_public_ip" {
   description = "IP público do servidor VPN Pritunl"
   value       = module.vpn.public_ip
 }
+
+# -----------------------------------------------------------------------------
+# Secrets
+# -----------------------------------------------------------------------------
+output "monitoring_secret_name" {
+  description = "Nome do segredo de observabilidade no Secrets Manager (consumido pelo External Secrets)"
+  value       = module.secrets.monitoring_secret_name
+}

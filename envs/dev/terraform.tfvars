@@ -29,6 +29,11 @@ cluster_deletion_protection = false
 rds_deletion_protection     = false
 
 # -----------------------------------------------------------------------------
+# CloudWatch Logs — Retenção do control plane (FinOps: janela curta no dev)
+# -----------------------------------------------------------------------------
+cluster_log_retention_in_days = 7
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
 # IMPORTANTE: NUNCA commitar com valores reais. Use:

@@ -72,6 +72,19 @@ variable "cluster_deletion_protection" {
   default     = false
 }
 
+# -----------------------------------------------------------------------------
+# CloudWatch Logs — Retenção do control plane do EKS
+# -----------------------------------------------------------------------------
+#   dev  → janela curta (FinOps; logs de debug de curto prazo bastam)
+#   prod → janela estendida (auditoria/compliance)
+# Evita o default da AWS de "nunca expirar" em /aws/eks/<cluster>/cluster.
+# -----------------------------------------------------------------------------
+variable "cluster_log_retention_in_days" {
+  description = "Dias de retenção dos logs do control plane do EKS no CloudWatch (0 = nunca expira)"
+  type        = number
+  default     = 30
+}
+
 variable "rds_deletion_protection" {
   description = "Proteção contra exclusão acidental dos bancos RDS (true em prod)"
   type        = bool
@@ -98,5 +111,49 @@ variable "aws_secret_access_key" {
 variable "aws_session_token" {
   description = "AWS Session Token (sessão Academy)"
   type        = string
+  sensitive   = true
+}
+
+# -----------------------------------------------------------------------------
+# Observabilidade — segredo solidarytech/monitoring (Secrets Manager)
+# -----------------------------------------------------------------------------
+variable "grafana_admin_user" {
+  description = "Usuário admin do Grafana"
+  type        = string
+  default     = "admin"
+}
+
+variable "grafana_admin_password" {
+  description = "Senha admin do Grafana (TF_VAR_grafana_admin_password)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "discord_webhook_url" {
+  description = "Discord webhook para alertas/self-healing (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "pagerduty_service_key" {
+  description = "PagerDuty service/integration key (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "new_relic_api_key" {
+  description = "New Relic API key para export OTLP (opcional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "anthropic_api_key" {
+  description = "API key da Claude API (Anthropic) para o resumo de incidentes com GenAI no self-healing (AIOps). Opcional."
+  type        = string
+  default     = ""
   sensitive   = true
 }

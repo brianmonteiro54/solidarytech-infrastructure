@@ -11,6 +11,9 @@ AVD-AWS-0177
 # EKS logging
 AVD-AWS-0038
 
+# CloudWatch Log Group sem CMK própria — conta Academy não permite KMS (igual AVD-AWS-0098)
+AVD-AWS-0017
+
 # SQS policy
 AVD-AWS-0097
 
@@ -44,3 +47,6 @@ KSV-0016
 KSV-0018
 KSV-0020
 KSV-0021
+
+# Secret sem CMK própria — conta Academy usa aws/secretsmanager; CMK não viável no lab
+AVD-AWS-0098

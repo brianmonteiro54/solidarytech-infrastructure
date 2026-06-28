@@ -269,6 +269,7 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="module_networking"></a> [networking](#module\_networking) | ./modules/networking | n/a |
 | <a name="module_platform"></a> [platform](#module\_platform) | ./modules/platform | n/a |
 | <a name="module_registry"></a> [registry](#module\_registry) | ./modules/registry | n/a |
+| <a name="module_secrets"></a> [secrets](#module\_secrets) | ./modules/secrets | n/a |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | ./modules/vpn | n/a |
 
 ## Resources
@@ -283,14 +284,23 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_anthropic_api_key"></a> [anthropic\_api\_key](#input\_anthropic\_api\_key) | API key da Claude API (Anthropic) para o resumo de incidentes com GenAI no self-healing (AIOps). Opcional. | `string` | `""` | no |
 | <a name="input_aws_access_key_id"></a> [aws\_access\_key\_id](#input\_aws\_access\_key\_id) | AWS Access Key ID (sessão Academy) | `string` | n/a | yes |
 | <a name="input_aws_secret_access_key"></a> [aws\_secret\_access\_key](#input\_aws\_secret\_access\_key) | AWS Secret Access Key (sessão Academy) | `string` | n/a | yes |
 | <a name="input_aws_session_token"></a> [aws\_session\_token](#input\_aws\_session\_token) | AWS Session Token (sessão Academy) | `string` | n/a | yes |
+| <a name="input_cluster_deletion_protection"></a> [cluster\_deletion\_protection](#input\_cluster\_deletion\_protection) | Proteção contra exclusão acidental do cluster EKS (true em prod) | `bool` | `false` | no |
+| <a name="input_cluster_log_retention_in_days"></a> [cluster\_log\_retention\_in\_days](#input\_cluster\_log\_retention\_in\_days) | Dias de retenção dos logs do control plane do EKS no CloudWatch (0 = nunca expira) | `number` | `30` | no |
 | <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | Centro de custos para tags FinOps | `string` | `"NGO-Core"` | no |
+| <a name="input_discord_webhook_url"></a> [discord\_webhook\_url](#input\_discord\_webhook\_url) | Discord webhook para alertas/self-healing (opcional) | `string` | `""` | no |
 | <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Habilita NAT Gateway para acesso outbound das subnets privadas | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Ambiente de deploy (dev, staging, prod) - propagado em todas as tags | `string` | n/a | yes |
+| <a name="input_grafana_admin_password"></a> [grafana\_admin\_password](#input\_grafana\_admin\_password) | Senha admin do Grafana (TF\_VAR\_grafana\_admin\_password) | `string` | `""` | no |
+| <a name="input_grafana_admin_user"></a> [grafana\_admin\_user](#input\_grafana\_admin\_user) | Usuário admin do Grafana | `string` | `"admin"` | no |
+| <a name="input_new_relic_api_key"></a> [new\_relic\_api\_key](#input\_new\_relic\_api\_key) | New Relic API key para export OTLP (opcional) | `string` | `""` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Time responsável pelos recursos (tag FinOps/Governança) | `string` | `"DevOps-Team"` | no |
+| <a name="input_pagerduty_service_key"></a> [pagerduty\_service\_key](#input\_pagerduty\_service\_key) | PagerDuty service/integration key (opcional) | `string` | `""` | no |
 | <a name="input_project"></a> [project](#input\_project) | Nome do projeto - usado em prefixos e tags | `string` | `"SolidaryTech"` | no |
+| <a name="input_rds_deletion_protection"></a> [rds\_deletion\_protection](#input\_rds\_deletion\_protection) | Proteção contra exclusão acidental dos bancos RDS (true em prod) | `bool` | `false` | no |
 | <a name="input_region"></a> [region](#input\_region) | Região AWS onde os recursos serão provisionados | `string` | `"us-east-1"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod) | `bool` | `true` | no |
 
@@ -302,6 +312,7 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Nome do cluster EKS |
 | <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | Nome da tabela DynamoDB de voluntários |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | URLs dos repositórios ECR por microsserviço |
+| <a name="output_monitoring_secret_name"></a> [monitoring\_secret\_name](#output\_monitoring\_secret\_name) | Nome do segredo de observabilidade no Secrets Manager (consumido pelo External Secrets) |
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | Subnets privadas (onde rodam EKS workers, RDS, etc) |
 | <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | Subnets públicas (ELB, NAT, VPN) |
 | <a name="output_rds_endpoints"></a> [rds\_endpoints](#output\_rds\_endpoints) | Endpoints dos bancos RDS (mapeados por serviço) |

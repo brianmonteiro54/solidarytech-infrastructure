@@ -101,6 +101,9 @@ module "platform" {
   # Deletion protection (dev: false, prod: true)
   cluster_deletion_protection = var.cluster_deletion_protection
 
+  # Retenção dos logs do control plane no CloudWatch (dev: curta, prod: estendida)
+  cluster_log_retention_in_days = var.cluster_log_retention_in_days
+
   # IAM (AWS Academy: reusa LabRole para tudo)
   cluster_role_arn = data.aws_iam_role.lab_role.arn
   node_role_arn    = data.aws_iam_role.lab_role.arn
@@ -109,4 +112,18 @@ module "platform" {
   aws_access_key_id     = var.aws_access_key_id
   aws_secret_access_key = var.aws_secret_access_key
   aws_session_token     = var.aws_session_token
+}
+
+# -----------------------------------------------------------------------------
+# 7. Secrets — AWS Secrets Manager (consumido pelo External Secrets no cluster)
+# -----------------------------------------------------------------------------
+module "secrets" {
+  source = "./modules/secrets"
+
+  grafana_admin_user     = var.grafana_admin_user
+  grafana_admin_password = var.grafana_admin_password
+  discord_webhook_url    = var.discord_webhook_url
+  pagerduty_service_key  = var.pagerduty_service_key
+  new_relic_api_key      = var.new_relic_api_key
+  anthropic_api_key      = var.anthropic_api_key
 }

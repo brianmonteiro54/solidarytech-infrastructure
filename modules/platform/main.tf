@@ -7,12 +7,27 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# 0. CloudWatch Log Group do control plane (RETENÇÃO EXPLÍCITA)
+# -----------------------------------------------------------------------------
+resource "aws_cloudwatch_log_group" "eks" {
+  # checkov:skip=CKV_AWS_158:CMK não viável na conta AWS Academy (sem KMS, igual enable_secrets_encryption=false)
+  # checkov:skip=CKV_AWS_338:Retenção definida por ambiente via var.cluster_log_retention_in_days (FinOps: dev curto, prod estendido)
+  name              = "/aws/eks/${var.cluster_name}/cluster"
+  retention_in_days = var.cluster_log_retention_in_days
+
+  tags = {
+    Name      = "/aws/eks/${var.cluster_name}/cluster"
+    Component = "eks-control-plane-logs"
+  }
+}
+
+# -----------------------------------------------------------------------------
 # 1. EKS Cluster (módulo Git versionado)
 # -----------------------------------------------------------------------------
 module "eks" {
   # checkov:skip=CKV_AWS_38:Public access desabilitado via endpoint_public_access
   # checkov:skip=CKV_AWS_37:Todos os tipos de log estão habilitados
-  source = "github.com/brianmonteiro54/terraform-aws-eks-platform//modules/eks?ref=116e4fa01cd755dbe0516249c6d916b52274ba6b"
+  source = "github.com/brianmonteiro54/terraform-aws-eks-platform//modules/eks?ref=2583f0cc17f16d4e253c8b500d495828126521c0"
 
   # --- Controle de Módulo (AWS Academy: reusa LabRole, não cria nada IAM) ---
   create_cluster         = true
@@ -41,6 +56,7 @@ module "eks" {
   ip_family               = "ipv4"
 
   # --- Logs (observability) ---
+  # Escreve no log group aws_cloudwatch_log_group.eks (retenção controlada).
   cluster_logging_enabled   = true
   enabled_cluster_log_types = var.enabled_cluster_log_types
 
@@ -84,6 +100,7 @@ module "eks" {
   cluster_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
+  depends_on = [aws_cloudwatch_log_group.eks]
 }
 
 # -----------------------------------------------------------------------------
