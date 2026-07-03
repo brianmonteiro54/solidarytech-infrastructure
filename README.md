@@ -264,13 +264,13 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_bastion"></a> [bastion](#module\_bastion) | ./modules/bastion | n/a |
 | <a name="module_databases"></a> [databases](#module\_databases) | ./modules/databases | n/a |
 | <a name="module_messaging"></a> [messaging](#module\_messaging) | ./modules/messaging | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ./modules/networking | n/a |
 | <a name="module_platform"></a> [platform](#module\_platform) | ./modules/platform | n/a |
 | <a name="module_registry"></a> [registry](#module\_registry) | ./modules/registry | n/a |
 | <a name="module_secrets"></a> [secrets](#module\_secrets) | ./modules/secrets | n/a |
-| <a name="module_vpn"></a> [vpn](#module\_vpn) | ./modules/vpn | n/a |
 
 ## Resources
 
@@ -303,21 +303,23 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="input_rds_deletion_protection"></a> [rds\_deletion\_protection](#input\_rds\_deletion\_protection) | Proteção contra exclusão acidental dos bancos RDS (true em prod) | `bool` | `false` | no |
 | <a name="input_region"></a> [region](#input\_region) | Região AWS onde os recursos serão provisionados | `string` | `"us-east-1"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod) | `bool` | `true` | no |
+| <a name="input_ssh_allowed_cidrs"></a> [ssh\_allowed\_cidrs](#input\_ssh\_allowed\_cidrs) | Lista de CIDRs liberados para SSH no bastion (ex: ["203.0.113.4/32"]). Vazio = sem SSH. | `list(string)` | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | IP público do bastion (SSH jump host que roda o bootstrap) |
+| <a name="output_bastion_ssh_command"></a> [bastion\_ssh\_command](#output\_bastion\_ssh\_command) | Comando SSH para o bastion (requer ssh\_allowed\_cidrs configurado e a chave) |
 | <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | Endpoint do API server do EKS (privado neste setup) |
 | <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Nome do cluster EKS |
 | <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | Nome da tabela DynamoDB de voluntários |
 | <a name="output_ecr_repository_urls"></a> [ecr\_repository\_urls](#output\_ecr\_repository\_urls) | URLs dos repositórios ECR por microsserviço |
 | <a name="output_monitoring_secret_name"></a> [monitoring\_secret\_name](#output\_monitoring\_secret\_name) | Nome do segredo de observabilidade no Secrets Manager (consumido pelo External Secrets) |
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | Subnets privadas (onde rodam EKS workers, RDS, etc) |
-| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | Subnets públicas (ELB, NAT, VPN) |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | Subnets públicas (ELB, NAT, bastion) |
 | <a name="output_rds_endpoints"></a> [rds\_endpoints](#output\_rds\_endpoints) | Endpoints dos bancos RDS (mapeados por serviço) |
 | <a name="output_sqs_donations_dlq_url"></a> [sqs\_donations\_dlq\_url](#output\_sqs\_donations\_dlq\_url) | URL da Dead Letter Queue de doações |
 | <a name="output_sqs_donations_url"></a> [sqs\_donations\_url](#output\_sqs\_donations\_url) | URL da fila SQS principal de doações |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID da VPC criada |
-| <a name="output_vpn_public_ip"></a> [vpn\_public\_ip](#output\_vpn\_public\_ip) | IP público do servidor VPN Pritunl |
 <!-- END_TF_DOCS -->
