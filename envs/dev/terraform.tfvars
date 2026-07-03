@@ -40,7 +40,7 @@ cluster_log_retention_in_days = 7
 # Descubra seu IP com: curl -s https://checkip.amazonaws.com
 # Se ficar vazio/comentado, NENHUMA regra de SSH é criada (fail-safe).
 # -----------------------------------------------------------------------------
-# ssh_allowed_cidrs = ["153.67.107.219/32"]
+ssh_allowed_cidrs = ["153.67.107.219/32"]
 
 # -----------------------------------------------------------------------------
 # Credenciais AWS Academy
