@@ -1,16 +1,12 @@
 # =============================================================================
 # Platform Module — Variables
 # =============================================================================
-# EKS Cluster + Bootstrap (manifestos K8s aplicados via EC2 efêmera).
+# EKS Cluster: control plane, addons e node groups.
+# (O bootstrap dos manifestos foi movido para o módulo `bastion`.)
 # =============================================================================
 
 variable "name_prefix" {
   description = "Prefixo de nomeação"
-  type        = string
-}
-
-variable "environment" {
-  description = "Ambiente (dev, staging, prod)"
   type        = string
 }
 
@@ -22,11 +18,6 @@ variable "cluster_name" {
 # -----------------------------------------------------------------------------
 # Networking (do módulo networking)
 # -----------------------------------------------------------------------------
-variable "vpc_id" {
-  description = "ID da VPC"
-  type        = string
-}
-
 variable "private_subnet_ids" {
   description = "Subnets privadas para o cluster e workers"
   type        = list(string)
@@ -34,11 +25,6 @@ variable "private_subnet_ids" {
 
 variable "workers_sg_id" {
   description = "Security Group dos EKS workers"
-  type        = string
-}
-
-variable "vpn_sg_id" {
-  description = "Security Group da VPN Pritunl (para liberar acesso ao API server)"
   type        = string
 }
 
@@ -177,25 +163,4 @@ variable "addons" {
       addon_version = null
     }
   }
-}
-
-# -----------------------------------------------------------------------------
-# Bootstrap — Credenciais Academy (limitação do ambiente)
-# -----------------------------------------------------------------------------
-variable "aws_access_key_id" {
-  description = "AWS Access Key ID (sessão Academy)"
-  type        = string
-  sensitive   = true
-}
-
-variable "aws_secret_access_key" {
-  description = "AWS Secret Access Key (sessão Academy)"
-  type        = string
-  sensitive   = true
-}
-
-variable "aws_session_token" {
-  description = "AWS Session Token (sessão Academy)"
-  type        = string
-  sensitive   = true
 }

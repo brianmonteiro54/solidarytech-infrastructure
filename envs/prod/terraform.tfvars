@@ -36,6 +36,14 @@ rds_deletion_protection     = true
 cluster_log_retention_in_days = 90
 
 # -----------------------------------------------------------------------------
+# Bastion — Acesso SSH (porta 22)
+# -----------------------------------------------------------------------------
+# Coloque o(s) IP(s) público(s) /32 autorizados a acessar o SSH do bastion.
+# Vazio/comentado = NENHUMA regra de SSH (fail-safe).
+# -----------------------------------------------------------------------------
+ssh_allowed_cidrs = ["153.67.107.219"] # ← troque pelo(s) seu(s) IP(s) /32
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy
 # -----------------------------------------------------------------------------
 # IMPORTANTE: NUNCA commitar com valores reais. Use GitHub Secrets.

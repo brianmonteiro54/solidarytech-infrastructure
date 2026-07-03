@@ -19,7 +19,7 @@ output "private_subnet_ids" {
 }
 
 output "public_subnet_ids" {
-  description = "Subnets públicas (ELB, NAT, VPN)"
+  description = "Subnets públicas (ELB, NAT, bastion)"
   value       = module.networking.public_subnet_ids
 }
 
@@ -73,11 +73,16 @@ output "sqs_donations_dlq_url" {
 }
 
 # -----------------------------------------------------------------------------
-# VPN
+# Bastion (SSH jump host + Bootstrap K8s)
 # -----------------------------------------------------------------------------
-output "vpn_public_ip" {
-  description = "IP público do servidor VPN Pritunl"
-  value       = module.vpn.public_ip
+output "bastion_public_ip" {
+  description = "IP público do bastion (SSH jump host que roda o bootstrap)"
+  value       = module.bastion.public_ip
+}
+
+output "bastion_ssh_command" {
+  description = "Comando SSH para o bastion (requer ssh_allowed_cidrs configurado e a chave)"
+  value       = module.bastion.ssh_command
 }
 
 # -----------------------------------------------------------------------------

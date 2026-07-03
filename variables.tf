@@ -92,9 +92,23 @@ variable "rds_deletion_protection" {
 }
 
 # -----------------------------------------------------------------------------
+# Bastion — Acesso SSH (porta 22)
+# -----------------------------------------------------------------------------
+# CIDRs autorizados a acessar o SSH do bastion. Deixe [] para NÃO criar regra
+# de SSH (fail-safe). Defina o SEU IP público /32 em envs/<env>/terraform.tfvars.
+# A chave SSH usada é a 'vockey' (padrão AWS Academy) — configurável no módulo.
+# -----------------------------------------------------------------------------
+variable "ssh_allowed_cidrs" {
+  description = "Lista de CIDRs liberados para SSH no bastion (ex: [\"203.0.113.4/32\"]). Vazio = sem SSH."
+  type        = list(string)
+  default     = []
+}
+
+# -----------------------------------------------------------------------------
 # Credenciais AWS Academy (sessão temporária)
 # -----------------------------------------------------------------------------
-# Necessárias para passar como user_data ao bootstrap EC2.
+# Escritas em ~/.aws/credentials no bastion (via user_data) para o bootstrap
+# do EKS. Limitação Academy: sem OIDC/IRSA.
 # -----------------------------------------------------------------------------
 variable "aws_access_key_id" {
   description = "AWS Access Key ID (sessão Academy)"

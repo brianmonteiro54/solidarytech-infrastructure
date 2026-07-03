@@ -62,41 +62,65 @@ module "databases" {
 }
 
 # -----------------------------------------------------------------------------
-# 5. VPN — Pritunl EC2 (acesso ao EKS privado)
+# 5. Bastion — EC2 ÚNICA: SSH jump host + Bootstrap K8s
 # -----------------------------------------------------------------------------
-module "vpn" {
-  source = "./modules/vpn"
+# Substitui o antigo módulo `bootstrap` (EC2 efêmera) por uma EC2 PERSISTENTE
+# que serve de bastion (SSH) para alcançar o EKS/RDS privados e aplica os
+# manifestos no EKS via user_data (uma vez, no primeiro boot). Sem VPN/Pritunl.
+#
+# Inversão de dependência: o bastion DEPENDE do platform (o bootstrap precisa
+# do cluster EKS já existindo). O platform NÃO depende mais do bastion — a
+# antiga var `vpn_sg_id` era morta (declarada mas nunca usada), então removê-la
+# quebrou o ciclo sem perda funcional. O bastion alcança o API server privado
+# anexando o SG do control plane (eks_cluster_security_group_id) como SG
+# secundário — a mesma técnica que a antiga EC2 de bootstrap efêmera (REMOVIDA) usava.
+# -----------------------------------------------------------------------------
+module "bastion" {
+  source = "./modules/bastion"
 
   name_prefix = local.name_prefix
   environment = var.environment
   cost_center = var.cost_center
   vpc_id      = module.networking.vpc_id
   subnet_id   = module.networking.public_subnet_ids[0]
-  # AWS Academy: LabInstanceProfile é o ÚNICO instance profile disponível.
-  # NOTA: instance_role espera um Instance Profile *name*, não o Role name.
-  # No Academy, ambos são pré-criados, mas têm nomes diferentes:
-  #   - Role: "LabRole"
-  #   - Instance Profile: "LabInstanceProfile"  ← esse que vai aqui
-  instance_role = "LabInstanceProfile"
+
+  # SEM IAM Instance Profile de propósito (instance_role fica null). O bootstrap
+  # autentica no EKS usando as credenciais estáticas da sessão (escritas em
+  # ~/.aws/credentials via user_data) — a MESMA identidade que criou o cluster e
+  # que tem admin. Anexar LabInstanceProfile/LabRole poderia resolver como outro
+  # principal sem admin no cluster, impedindo instalar ingress/external-secrets/etc.
+
+  # SSH (bastion): defina seu IP /32 em envs/<env>/terraform.tfvars
+  ssh_allowed_cidrs = var.ssh_allowed_cidrs
+
+  # --- Bootstrap: cluster alvo (vem do platform) ---
+  region                        = var.region
+  cluster_name                  = module.platform.cluster_name
+  eks_cluster_security_group_id = module.platform.cluster_security_group_id
+
+  # --- Credenciais Academy (escritas em ~/.aws/credentials via user_data) ---
+  aws_access_key_id     = var.aws_access_key_id
+  aws_secret_access_key = var.aws_secret_access_key
+  aws_session_token     = var.aws_session_token
+
+  # O bootstrap exige o cluster (e node groups) prontos antes de rodar.
+  depends_on = [module.platform]
 }
 
 # -----------------------------------------------------------------------------
-# 6. Platform — EKS Cluster + Bootstrap (manifestos via EC2 efêmera)
+# 6. Platform — EKS Cluster (control plane, addons, node groups)
 # -----------------------------------------------------------------------------
-# Bootstrap aplica os manifestos K8s a partir de uma EC2 DENTRO da VPC.
-# É necessário porque o cluster EKS é privado e o runner do GitHub Actions
-# não conseguiria atingir o API server diretamente.
+# O bootstrap dos manifestos K8s foi movido para o módulo `bastion` (acima),
+# que agora aplica tudo via user_data numa EC2 dentro da VPC (o API server é
+# privado e o runner do GitHub Actions não o alcança de fora).
 # -----------------------------------------------------------------------------
 module "platform" {
   source = "./modules/platform"
 
   name_prefix        = local.name_prefix
-  environment        = var.environment
   cluster_name       = "${local.name_prefix}-eks"
-  vpc_id             = module.networking.vpc_id
   private_subnet_ids = module.networking.private_subnet_ids
   workers_sg_id      = module.networking.eks_workers_sg_id
-  vpn_sg_id          = module.vpn.security_group_id
 
   # Deletion protection (dev: false, prod: true)
   cluster_deletion_protection = var.cluster_deletion_protection
@@ -107,11 +131,6 @@ module "platform" {
   # IAM (AWS Academy: reusa LabRole para tudo)
   cluster_role_arn = data.aws_iam_role.lab_role.arn
   node_role_arn    = data.aws_iam_role.lab_role.arn
-
-  # Credenciais Academy (passadas ao bootstrap EC2 — limitação Academy)
-  aws_access_key_id     = var.aws_access_key_id
-  aws_secret_access_key = var.aws_secret_access_key
-  aws_session_token     = var.aws_session_token
 }
 
 # -----------------------------------------------------------------------------
