@@ -41,3 +41,12 @@ metadata:
   labels:
     app.kubernetes.io/part-of: solidarytech
     app.kubernetes.io/component: observability
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: velero
+  labels:
+    app.kubernetes.io/part-of: solidarytech
+    app.kubernetes.io/component: disaster-recovery

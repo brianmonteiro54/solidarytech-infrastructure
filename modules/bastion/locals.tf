@@ -76,6 +76,32 @@ locals {
   ])
 
   # ---------------------------------------------------------------------------
+  # Secret de credenciais do Velero (namespace velero)
+  # ---------------------------------------------------------------------------
+  # O Velero espera UM único Secret com a chave "cloud" contendo o arquivo de
+  # credenciais AWS no formato INI (o mesmo local.aws_credentials já usado no
+  # ~/.aws/credentials do bastion). O plugin aws-sdk-go-v2 lê o aws_session_token
+  # daqui — por isso funciona com as credenciais temporárias do AWS Academy.
+  # Consumido por credentials.existingSecret: velero-aws-credentials no
+  # apps/20-velero.yaml do repo solidarytech-monitoring-gitops.
+  # Observação: expira junto com a sessão do Academy; renovar re-rodando o
+  # bootstrap (ou atualizando o Secret) refaz o backup agendado.
+  # ---------------------------------------------------------------------------
+  velero_credentials_secret_yaml = <<-EOT
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: velero-aws-credentials
+      namespace: velero
+      labels:
+        app.kubernetes.io/part-of: solidarytech
+        app.kubernetes.io/component: disaster-recovery
+    type: Opaque
+    data:
+      cloud: ${base64encode(local.aws_credentials)}
+  EOT
+
+  # ---------------------------------------------------------------------------
   # ArgoCD Root Application (App-of-Apps)
   # ---------------------------------------------------------------------------
   argocd_root_app_yaml = <<-EOT
@@ -114,6 +140,7 @@ locals {
   # ---------------------------------------------------------------------------
   additional_manifests = {
     "01-aws-credentials-secrets" = local.aws_credentials_secrets_yaml
+    "01-velero-credentials"      = local.velero_credentials_secret_yaml
     "02-argocd-root-app"         = local.argocd_root_app_yaml
   }
 
