@@ -51,9 +51,15 @@ variable "instance_role" {
 # -----------------------------------------------------------------------------
 # Configuração da Instância
 # -----------------------------------------------------------------------------
-# NOTA: a AMI é resolvida por data source (Amazon Linux 2023 amd64) no main.tf.
-# amd64 é obrigatório: o bootstrap baixa binários linux/amd64 (kubectl/helm).
-# AL2023 já traz a AWS CLI v2 pré-instalada.
+# NOTA: a AMI é resolvida pelo próprio módulo EC2 (Amazon Linux 2023 amd64)
+# quando ami_id fica null. amd64 é obrigatório: o bootstrap baixa binários
+# linux/amd64 (kubectl/helm). AL2023 já traz a AWS CLI v2 pré-instalada.
+variable "ami_id" {
+  description = "AMI a usar. null (padrão) = o módulo EC2 resolve a última Amazon Linux 2023 amd64."
+  type        = string
+  default     = null
+}
+
 variable "instance_type" {
   description = "Tipo da instância (amd64). t3.micro basta p/ o bootstrap (mesmo tamanho do bootstrap efêmero original)."
   type        = string

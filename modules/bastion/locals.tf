@@ -165,12 +165,20 @@ locals {
   # Só SSH — e só se ssh_allowed_cidrs for informado (fail-safe: lista vazia =
   # nenhuma regra de ingress). O egress (default allow-all do módulo EC2) é o
   # que o bastion usa para alcançar o API do EKS e baixar binários.
-  ingress_rules = length(var.ssh_allowed_cidrs) > 0 ? [
+  #
+  # Normalização: se o usuário informar um IP sem máscara (ex: "1.2.3.4"),
+  # adicionamos "/32" automaticamente (CIDR exige prefixo). Valores que já têm
+  # "/" passam intactos (ex: "10.0.0.0/16").
+  ssh_cidrs_normalized = [
+    for c in var.ssh_allowed_cidrs : can(regex("/", c)) ? c : "${c}/32"
+  ]
+
+  ingress_rules = length(local.ssh_cidrs_normalized) > 0 ? [
     {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_blocks = var.ssh_allowed_cidrs
+      cidr_blocks = local.ssh_cidrs_normalized
       description = "SSH admin (bastion) - CIDRs restritos"
     }
   ] : []

@@ -16,33 +16,8 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Data Sources
-# -----------------------------------------------------------------------------
-# AMI Amazon Linux 2023 amd64 (mesma base do bootstrap efêmero original).
-# amd64 é obrigatório (o bootstrap baixa binários linux/amd64). AL2023 já traz
-# a AWS CLI v2 pré-instalada — que o `aws eks update-kubeconfig` usa.
-data "aws_ami" "al2023" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-x86_64"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name   = "state"
-    values = ["available"]
-  }
-}
-
-# -----------------------------------------------------------------------------
 # EC2 (módulo Git versionado por hash imutável)
+# -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 module "bastion" {
   # checkov:skip=CKV2_AWS_5:Security Group is attached internally by module
@@ -56,7 +31,7 @@ module "bastion" {
   cost_center   = var.cost_center
 
   # --- Configuração da Instância ---
-  ami_id               = data.aws_ami.al2023.id
+  ami_id               = var.ami_id # null (padrão) → módulo resolve AL2023 amd64
   instance_type        = var.instance_type
   iam_instance_profile = var.instance_role # null por padrão = SEM profile (auth via creds estáticas)
   key_name             = var.key_name

@@ -41,7 +41,7 @@ cluster_log_retention_in_days = 90
 # Coloque o(s) IP(s) público(s) /32 autorizados a acessar o SSH do bastion.
 # Vazio/comentado = NENHUMA regra de SSH (fail-safe).
 # -----------------------------------------------------------------------------
-ssh_allowed_cidrs = ["153.67.107.219"] # ← troque pelo(s) seu(s) IP(s) /32
+# ssh_allowed_cidrs = ["153.67.107.219/32"]
 
 # -----------------------------------------------------------------------------
 # Credenciais AWS Academy
