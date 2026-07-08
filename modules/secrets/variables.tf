@@ -61,3 +61,51 @@ variable "anthropic_api_key" {
   default     = ""
   sensitive   = true
 }
+
+# =============================================================================
+# Segredos de CONFIG das aplicações (consumidos via External Secrets)
+# =============================================================================
+# Diferente do monitoring (valores sensíveis, setados fora do apply), estes são
+# CONFIG derivada de outros módulos (endpoint do RDS, URL do SQS). Portanto o
+# Terraform os mantém em sincronia — SEM ignore_changes.
+# As chaves do JSON batem EXATAMENTE com o remoteRef.property dos ExternalSecrets
+# donation-service-config / ngo-service-config.
+# =============================================================================
+
+variable "create_app_secrets" {
+  description = "Cria solidarytech/donation-service e solidarytech/ngo-service. Em conta AWS compartilhada dev/prod, deixe true em APENAS UM ambiente (os nomes são globais)."
+  type        = bool
+  default     = true
+}
+
+variable "donation_db_endpoint" {
+  description = "Endpoint do RDS donation (host ou host:porta). Fonte: module.databases.rds_endpoints[\"donation\"]."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "donation_db_name" {
+  description = "Nome do database donation. Fonte: module.databases.rds_db_names[\"donation\"]."
+  type        = string
+  default     = "donation_db"
+}
+
+variable "donation_sqs_url" {
+  description = "URL da fila SQS de doações. Fonte: module.messaging.queue_url."
+  type        = string
+  default     = ""
+}
+
+variable "ngo_db_endpoint" {
+  description = "Endpoint do RDS ngo (host ou host:porta). Fonte: module.databases.rds_endpoints[\"ngo\"]."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "ngo_db_name" {
+  description = "Nome do database ngo. Fonte: module.databases.rds_db_names[\"ngo\"]."
+  type        = string
+  default     = "ngo_db"
+}

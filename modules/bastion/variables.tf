@@ -236,7 +236,7 @@ variable "argocd_ingress_enabled" {
 variable "argocd_ingress_host" {
   description = "Host do Ingress do ArgoCD"
   type        = string
-  default     = "solidary.local"
+  default     = "solidarytech.pt"
 }
 
 variable "argocd_ingress_path" {

@@ -11,3 +11,13 @@ output "monitoring_secret_arn" {
   description = "ARN do segredo de observabilidade."
   value       = var.create_monitoring_secret ? aws_secretsmanager_secret.monitoring[0].arn : null
 }
+
+output "donation_secret_name" {
+  description = "Nome do segredo de config do donation-service."
+  value       = var.create_app_secrets ? aws_secretsmanager_secret.donation[0].name : null
+}
+
+output "ngo_secret_name" {
+  description = "Nome do segredo de config do ngo-service."
+  value       = var.create_app_secrets ? aws_secretsmanager_secret.ngo[0].name : null
+}

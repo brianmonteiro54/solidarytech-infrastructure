@@ -145,4 +145,10 @@ module "secrets" {
   pagerduty_service_key  = var.pagerduty_service_key
   new_relic_api_key      = var.new_relic_api_key
   anthropic_api_key      = var.anthropic_api_key
+
+  donation_db_endpoint = module.databases.rds_endpoints["donation"]
+  donation_db_name     = module.databases.rds_db_names["donation"]
+  donation_sqs_url     = module.messaging.queue_url
+  ngo_db_endpoint      = module.databases.rds_endpoints["ngo"]
+  ngo_db_name          = module.databases.rds_db_names["ngo"]
 }
