@@ -18,7 +18,7 @@ module "vpc" {
   # checkov:skip=CKV_AWS_130:Public subnets intentionally map public IPs for ingress
   # checkov:skip=CKV2_AWS_11:VPC Flow Logs serão habilitados na etapa de observabilidade
   # checkov:skip=CKV2_AWS_12:Default SG é restrito pelo provider
-  source = "github.com/brianmonteiro54/terraform-aws-vpc-network//modules/vpc?ref=1185cd978b63dae90bac2097c666f3fe45e64f61"
+  source = "github.com/brianmonteiro54/terraform-aws-vpc-network//modules/vpc?ref=c54c9bc1c6075d9ae9b939bc83187b1934d658f5"
 
   name        = "${var.name_prefix}-vpc"
   vpc_cidr    = var.vpc_cidr
@@ -29,6 +29,13 @@ module "vpc" {
 
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway
+
+  # Gateway Endpoints (sem custo adicional da AWS) para S3 e DynamoDB.
+  # Associados às route tables privadas pelo módulo: o tráfego dessas subnets
+  # para S3/DynamoDB passa a usar o backbone da AWS em vez do NAT Gateway,
+  # eliminando a taxa de data processing do NAT nesse tráfego.
+  enable_s3_endpoint       = true
+  enable_dynamodb_endpoint = true
 
   enable_dns_hostnames = true
   enable_dns_support   = true
