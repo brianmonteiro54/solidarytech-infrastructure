@@ -85,10 +85,44 @@ variable "cluster_log_retention_in_days" {
   default     = 30
 }
 
+# -----------------------------------------------------------------------------
+# RDS
+# -----------------------------------------------------------------------------
+
 variable "rds_deletion_protection" {
   description = "Proteção contra exclusão acidental dos bancos RDS (true em prod)"
   type        = bool
   default     = false
+}
+
+variable "rds_multi_az" {
+  description = "Multi-AZ standby (FinOps: false em dev, true em prod)"
+  type        = bool
+  default     = false
+}
+
+variable "rds_instance_class" {
+  description = "Tipo da instância RDS (FinOps: db.t3.micro em dev, db.t3.small+ em prod)"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "rds_max_allocated_storage" {
+  description = "Auto-scaling max em GB"
+  type        = number
+  default     = 50
+}
+
+variable "rds_skip_final_snapshot" {
+  description = "Pula snapshot final na destruição (dev: true, prod: false)"
+  type        = bool
+  default     = true
+}
+
+variable "rds_backup_retention_period" {
+  description = "Dias de retenção de backup (FinOps + DR)"
+  type        = number
+  default     = 7
 }
 
 # -----------------------------------------------------------------------------
