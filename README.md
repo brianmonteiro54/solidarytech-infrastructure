@@ -304,6 +304,7 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="input_region"></a> [region](#input\_region) | Região AWS onde os recursos serão provisionados | `string` | `"us-east-1"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod) | `bool` | `true` | no |
 | <a name="input_ssh_allowed_cidrs"></a> [ssh\_allowed\_cidrs](#input\_ssh\_allowed\_cidrs) | Lista de CIDRs liberados para SSH no bastion (ex: ["203.0.113.4/32"]). Vazio = sem SSH. | `list(string)` | `[]` | no |
+| <a name="input_token_github"></a> [token\_github](#input\_token\_github) | Token GITHUB. | `string` | `""` | no |
 
 ## Outputs
 

@@ -28,6 +28,7 @@ resource "aws_secretsmanager_secret_version" "monitoring" {
   secret_string = jsonencode({
     GRAFANA_ADMIN_USER     = var.grafana_admin_user
     GRAFANA_ADMIN_PASSWORD = var.grafana_admin_password
+    token_github           = var.token_github
     DISCORD_WEBHOOK_URL    = var.discord_webhook_url
     PAGERDUTY_SERVICE_KEY  = var.pagerduty_service_key
     NEW_RELIC_API_KEY      = var.new_relic_api_key
