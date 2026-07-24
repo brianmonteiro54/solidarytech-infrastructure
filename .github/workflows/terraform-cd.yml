@@ -104,4 +104,4 @@ jobs:
       PAGERDUTY_SERVICE_KEY: ${{ secrets.PAGERDUTY_SERVICE_KEY }}
       NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+      GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
