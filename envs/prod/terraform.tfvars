@@ -58,8 +58,8 @@ ssh_allowed_cidrs = ["153.67.107.219/32"]
 # Os defaults dos módulos são FinOps-friendly. Em PROD vale ativar:
 #
 # RDS — Multi-AZ + retenção estendida
-   rds_multi_az                = true   # Standby síncrono em outra AZ
-   rds_instance_class          = "db.t3.small"
-   rds_max_allocated_storage   = 100
-   rds_skip_final_snapshot     = false  # Sempre tira snapshot ao destruir
-   rds_backup_retention_period = 14     # 14 dias de backup
+rds_multi_az                = true # Standby síncrono em outra AZ
+rds_instance_class          = "db.t3.small"
+rds_max_allocated_storage   = 100
+rds_skip_final_snapshot     = false # Sempre tira snapshot ao destruir
+rds_backup_retention_period = 14    # 14 dias de backup
