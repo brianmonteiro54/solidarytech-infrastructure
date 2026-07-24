@@ -144,6 +144,13 @@ variable "grafana_admin_password" {
   sensitive   = true
 }
 
+variable "token_github" {
+  description = "Token GITHUB."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
 variable "discord_webhook_url" {
   description = "Discord webhook para alertas/self-healing (opcional)"
   type        = string

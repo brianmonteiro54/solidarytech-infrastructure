@@ -141,6 +141,7 @@ module "secrets" {
 
   grafana_admin_user     = var.grafana_admin_user
   grafana_admin_password = var.grafana_admin_password
+  GITHUB_TOKEN           = var.token_github
   discord_webhook_url    = var.discord_webhook_url
   pagerduty_service_key  = var.pagerduty_service_key
   new_relic_api_key      = var.new_relic_api_key
