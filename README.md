@@ -300,7 +300,12 @@ Recursos individuais ainda recebem `Service = "<name>"` para discriminação gra
 | <a name="input_owner"></a> [owner](#input\_owner) | Time responsável pelos recursos (tag FinOps/Governança) | `string` | `"DevOps-Team"` | no |
 | <a name="input_pagerduty_service_key"></a> [pagerduty\_service\_key](#input\_pagerduty\_service\_key) | PagerDuty service/integration key (opcional) | `string` | `""` | no |
 | <a name="input_project"></a> [project](#input\_project) | Nome do projeto - usado em prefixos e tags | `string` | `"SolidaryTech"` | no |
+| <a name="input_rds_backup_retention_period"></a> [rds\_backup\_retention\_period](#input\_rds\_backup\_retention\_period) | Dias de retenção de backup (FinOps + DR) | `number` | `7` | no |
 | <a name="input_rds_deletion_protection"></a> [rds\_deletion\_protection](#input\_rds\_deletion\_protection) | Proteção contra exclusão acidental dos bancos RDS (true em prod) | `bool` | `false` | no |
+| <a name="input_rds_instance_class"></a> [rds\_instance\_class](#input\_rds\_instance\_class) | Tipo da instância RDS (FinOps: db.t3.micro em dev, db.t3.small+ em prod) | `string` | `"db.t3.micro"` | no |
+| <a name="input_rds_max_allocated_storage"></a> [rds\_max\_allocated\_storage](#input\_rds\_max\_allocated\_storage) | Auto-scaling max em GB | `number` | `50` | no |
+| <a name="input_rds_multi_az"></a> [rds\_multi\_az](#input\_rds\_multi\_az) | Multi-AZ standby (FinOps: false em dev, true em prod) | `bool` | `false` | no |
+| <a name="input_rds_skip_final_snapshot"></a> [rds\_skip\_final\_snapshot](#input\_rds\_skip\_final\_snapshot) | Pula snapshot final na destruição (dev: true, prod: false) | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | Região AWS onde os recursos serão provisionados | `string` | `"us-east-1"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | true = 1 NAT (FinOps, dev); false = 1 NAT por AZ (HA, prod) | `bool` | `true` | no |
 | <a name="input_ssh_allowed_cidrs"></a> [ssh\_allowed\_cidrs](#input\_ssh\_allowed\_cidrs) | Lista de CIDRs liberados para SSH no bastion (ex: ["203.0.113.4/32"]). Vazio = sem SSH. | `list(string)` | `[]` | no |
