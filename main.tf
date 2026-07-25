@@ -57,8 +57,13 @@ module "databases" {
   allowed_sg_id      = module.networking.eks_workers_sg_id
   rds_databases      = local.rds_databases
 
-  # Deletion protection (dev: false, prod: true)
-  rds_deletion_protection = var.rds_deletion_protection
+  # RDS: HA, storage, backup e proteção (dev: mínimos; prod: setados no tfvars)
+  rds_deletion_protection     = var.rds_deletion_protection
+  rds_multi_az                = var.rds_multi_az
+  rds_instance_class          = var.rds_instance_class
+  rds_max_allocated_storage   = var.rds_max_allocated_storage
+  rds_skip_final_snapshot     = var.rds_skip_final_snapshot
+  rds_backup_retention_period = var.rds_backup_retention_period
 }
 
 # -----------------------------------------------------------------------------
